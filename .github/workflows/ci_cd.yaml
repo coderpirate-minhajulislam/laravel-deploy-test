@@ -18,4 +18,4 @@ jobs:
         username: admin@coderpirate.com
         password: Minhaz@1332
         local-dir: './' 
-        
+        server-dir: '/public_html/'
