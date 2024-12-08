@@ -1,92 +1,19 @@
-
-
-
-
-
-name: Deploy Laravel to cPanel and Update Database
-
+name: Publish Website to CPanel
 on:
   push:
     branches:
       - main
-
 jobs:
-  deploy:
-    name: Deploy Laravel and Update Database on every commit
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, bcmath, zip, pdo, pdo_mysql
-
-    - name: Install Composer dependencies
-      run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
-
-    - name: Copy .env.example to .env
-      run: cp .env.example .env
-
-    - name: Generate APP_KEY
-      run: |
-        php artisan key:generate --force
-        echo "APP_KEY=$(php artisan key:generate --show)" >> .env
-    # - name: Set environment variables
-    #   run: |
-    #     echo "APP_ENV=production" >> .env
-    #     echo "APP_DEBUG=false" >> .env
-    #     echo "DB_CONNECTION=mysql" >> .env
-    #     echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-    #     echo "DB_PORT=3306" >> .env
-    #     echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-    #     echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-    #     echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-
-    - name: Create SQLite database file
-      run: |
-        touch /tmp/database.sqlite
-    - name: Run migrations
-      run: php artisan migrate --force
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-    # - name: Set up Node.js
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: '18'
-
-    - name: Install npm dependencies
-      run: npm install
-    # - name: Install npm dependencies
-    #   run: npm install
-
-    # - name: Compile assets
-    #   run: npm run production
-
-    - name: Optimize Laravel
-      run: |
-        php artisan config:cache
-        php artisan route:cache
-        php artisan view:cache
-    FTP-Deploy-Action:
+  FTP-Deploy-Action:
     name: FTP-Deploy-Action
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2.1.0
       with:
         fetch-depth: 2
-
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
-        with:
-          server: ftp.coderpirate.com
-          username: admin@coderpirate.com
-          password: Minhaz@1332
-          local-dir: './' 
-          server-dir: '/public_html/'
+      with:
+        server: ftp.coderpirate.com
+        username: admin@coderpirate.com
+        password: Minhaz@1332
