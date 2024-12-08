@@ -54,11 +54,11 @@ jobs:
       with:
         node-version: '18'
 
-    # - name: Install npm dependencies
-    #   run: npm install
+    - name: Install npm dependencies
+      run: npm install
 
-    - name: Compile assets
-      run: npm run production
+    # - name: Compile assets
+    #   run: npm run production
 
     - name: Optimize Laravel
       run: |
