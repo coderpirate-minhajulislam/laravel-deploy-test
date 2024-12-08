@@ -14,6 +14,6 @@ jobs:
     - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
-        server: admin@coderpirate.com
-        username: ftp.coderpirate.com
+        server: ftp.coderpirate.com
+        username: admin@coderpirate.com
         password: Minhaz@1332
