@@ -1,5 +1,4 @@
-
-name: Deploy HTML to cPanel and Update Database
+name: Deploy HTML to Hostinger and Update Database
 
 on:
   push:
@@ -71,18 +70,9 @@ jobs:
         php artisan route:cache
         php artisan view:cache
 
-    - name: FTP-Deploy-Action
-      uses: SamKirkland/FTP-Deploy-Action@4.3.2
-      with:
-        server: ftp.coderpirate.com
-        username: admin@coderpirate.com
-        password: Minhaz@1332
-        protocol: ftps
-        port: 21
-        local-dir: './'
-        server-dir: '/public_html/'
-        exclude: |
-          **/.git**
-          **/.git/**
-          **/node_modules/**
-          **/.**
+    - name: Install lftp
+      run: sudo apt-get install -y lftp
+
+    - name: Deploy with lftp
+      run: |
+        lftp -c "set ftp:ssl-allow true; set ftp:ssl-force true; open -u admin@coderpirate.com,Minhaz@1332 ftps://ftp.coderpirate.com; mirror -R --delete --exclude-glob .git --exclude-glob node_modules ./ "
