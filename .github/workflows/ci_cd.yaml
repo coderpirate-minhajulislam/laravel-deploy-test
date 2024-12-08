@@ -1,4 +1,5 @@
-name: Deploy Laravel to cPanel and Update Database
+
+name: Deploy HTML to cPanel and Update Database
 
 on:
   push:
@@ -7,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy Laravel and Update Database on every commit
+    name: Deploy HTML and Update Database on every commit
     runs-on: ubuntu-latest
 
     steps:
@@ -42,20 +43,24 @@ jobs:
     #     echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
     #     echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
 
-    - name: Create SQLite database file
-      run: |
-        touch /tmp/database.sqlite
-
     - name: Run migrations
       run: php artisan migrate --force
 
-    # - name: Set up Node.js
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: '18'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
 
-    # - name: Install npm dependencies
-    #   run: npm install
+    - name: Cache npm dependencies
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+
+    - name: Install npm dependencies
+      run: npm install
 
     # - name: Compile assets
     #   run: npm run production
